@@ -4,11 +4,35 @@ bl_info = {
     "version": (0, 1),
     "blender": (2, 71, 0),
     "location": "View3D > Tools",
-    "description": "Cet Operator cree un trou sur une sélection",
+    "description": "",
     "warning": "",
     "wiki_url": "",
     "category": "Tools"}
-    
+
+#Base du script venant de blenderlounge.fr
+#Réécriture à refaire par la suite pour un code plus clair
+#Principe met dans les property du rendu de blender un panel avec :
+#   Champ texte pour un nom de fichier
+#   Champ texte qui sert a changer un material cycle (Fonctionne dans un cas précis)
+#   Un bouton Setup render qui met les options de rendu suivant :
+
+#    scene.render.image_settings.file_format = 'JPEG'
+#    scene.render.image_settings.quality = 100
+#    scene.render.resolution_x = 1280
+#    scene.render.resolution_y = 720
+#    scene.render.use_border = False
+#    scene.cycles.use_square_samples = True
+#    scene.cycles.samples = 17
+#    scene.cycles.caustics_reflective = False
+#    scene.cycles.caustics_refractive = False
+#    scene.cycles.device = 'GPU'
+#    scene.render.use_simplify = True
+        
+#   layout.operator("object.playblastsetup")
+#   layout.operator("object.materialtsetup")
+#
+#
+
 import bpy, os
 
 episode = "08_EPISODE 08"
@@ -74,7 +98,7 @@ class RenderSETUP(bpy.types.Operator):
         return {'FINISHED'} 
 ##################################
 
-#Class Operator Trou
+#Class Operator playblast
 class PlayblastSETUP(bpy.types.Operator):                  
     """Settings for render playblast"""                   
     bl_idname = "object.playblastsetup"                     
@@ -132,7 +156,7 @@ class PlayblastSETUP(bpy.types.Operator):
 ##################################
 ##################################
 
-#Class Operator Trou
+#Class Operator material
 class MaterialtSETUP(bpy.types.Operator):           
     """Change material in red"""
     bl_idname = "object.materialtsetup"                     
@@ -163,7 +187,7 @@ class MaterialtSETUP(bpy.types.Operator):
 
 #Class Panel
 class PanelRendu(bpy.types.Panel):
-    """Ce Panel contient l'Operator qui crée un trou sur une sélection"""
+    """Ce Panel contient les options pour un setup immédiat du rendu"""
     bl_label = "Setup render"
     bl_idname = "OBJECT_PT_Créer_Des_trous"
     bl_space_type = 'PROPERTIES'
