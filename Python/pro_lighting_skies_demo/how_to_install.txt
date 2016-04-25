@@ -1,0 +1,12 @@
+For the full instructions on installing, go to:
+http://www.blenderguru.com/install-pro-lighting-skies/
+
+Step 1: Unzip the folder to anywhere on your harddrive.
+Step 2: Open Blender
+Step 3: Go to File>User Preferences then Addons.
+Step 4: At the bottom, click Install from File
+Step 5: Locate to the folder you unzipped to. Double-click environment_lighting.py. Close the user prefs.
+Step 5: Go to the World Panel and you should see Pro-Lighting: Skies (demo) available. Check the box next to it to enable.
+Step 6: You're ready to start using it! Click the sky thumbnail to change the sky.
+
+NOTE: If you can't get the addon to appear in the User Preferences, try Unzipping the folder to your addons folder instead. For most people that will be C:\Program Files\Blender Foundation\Blender\2.xx\scripts\addons.

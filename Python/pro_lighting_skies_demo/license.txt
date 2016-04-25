@@ -1,0 +1,6 @@
+The addon is available under the standard GPL license. And the skies (image files) are provided under the Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)
+More info: http://creativecommons.org/licenses/by-nd/4.0/
+
+NOTE: This sky license restriction applies only to the demo. The full paid version is available under a standard royalty free license.
+
+For questions: support@blenderguru.com

@@ -1,38 +1,14 @@
 bl_info = {
     "name": "Setup render",
-    "author": "AurÈlien Vivet",
+    "author": "Aur√©lien Vivet",
     "version": (0, 1),
     "blender": (2, 71, 0),
     "location": "View3D > Tools",
-    "description": "",
+    "description": "Cet Operator cree un trou sur une s√©lection",
     "warning": "",
     "wiki_url": "",
     "category": "Tools"}
-
-#Base du script venant de blenderlounge.fr
-#RÈÈcriture ‡ refaire par la suite pour un code plus clair
-#Principe met dans les property du rendu de blender un panel avec :
-#   Champ texte pour un nom de fichier
-#   Champ texte qui sert a changer un material cycle (Fonctionne dans un cas prÈcis)
-#   Un bouton Setup render qui met les options de rendu suivant :
-
-#    scene.render.image_settings.file_format = 'JPEG'
-#    scene.render.image_settings.quality = 100
-#    scene.render.resolution_x = 1280
-#    scene.render.resolution_y = 720
-#    scene.render.use_border = False
-#    scene.cycles.use_square_samples = True
-#    scene.cycles.samples = 17
-#    scene.cycles.caustics_reflective = False
-#    scene.cycles.caustics_refractive = False
-#    scene.cycles.device = 'GPU'
-#    scene.render.use_simplify = True
-        
-#   layout.operator("object.playblastsetup")
-#   layout.operator("object.materialtsetup")
-#
-#
-
+    
 import bpy, os
 
 episode = "08_EPISODE 08"
@@ -44,7 +20,7 @@ def main(context):
 
 #Class Operator Trou
 class RenderSETUP(bpy.types.Operator):                  
-    """Cet Operator cree un trou sur une sÈlection"""                   
+    """Cet Operator cree un trou sur une s√©lection"""                   
     bl_idname = "object.rendersetup"                     
     bl_label = "Setup render"        
 
@@ -98,7 +74,7 @@ class RenderSETUP(bpy.types.Operator):
         return {'FINISHED'} 
 ##################################
 
-#Class Operator playblast
+#Class Operator Trou
 class PlayblastSETUP(bpy.types.Operator):                  
     """Settings for render playblast"""                   
     bl_idname = "object.playblastsetup"                     
@@ -143,7 +119,7 @@ class PlayblastSETUP(bpy.types.Operator):
             scene.cycles.samples = 17
             scene.cycles.caustics_reflective = False
             scene.cycles.caustics_refractive = False
-            scene.render.use_simplify = False
+            #scene.render.use_simplify = False
             
         for area in bpy.context.screen.areas:
             if area.type == 'VIEW_3D':
@@ -156,7 +132,7 @@ class PlayblastSETUP(bpy.types.Operator):
 ##################################
 ##################################
 
-#Class Operator material
+#Class Operator Trou
 class MaterialtSETUP(bpy.types.Operator):           
     """Change material in red"""
     bl_idname = "object.materialtsetup"                     
@@ -187,9 +163,9 @@ class MaterialtSETUP(bpy.types.Operator):
 
 #Class Panel
 class PanelRendu(bpy.types.Panel):
-    """Ce Panel contient les options pour un setup immÈdiat du rendu"""
+    """Ce Panel contient l'Operator qui cr√©e un trou sur une s√©lection"""
     bl_label = "Setup render"
-    bl_idname = "OBJECT_PT_CrÈer_Des_trous"
+    bl_idname = "OBJECT_PT_Cr√©er_Des_trous"
     bl_space_type = 'PROPERTIES'
 #    bl_category = "Info" 
     bl_region_type = 'WINDOW'
