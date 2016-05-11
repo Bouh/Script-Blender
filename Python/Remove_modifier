@@ -1,0 +1,10 @@
+#Importation de la bibliothèque blender
+import bpy
+
+#Liste de tout les objets sélectionné
+objs = bpy.context.selected_objects
+
+#Pour chaque objets
+for val in objs:
+    #Suppression des modificateurs
+    val.modifiers.clear()
