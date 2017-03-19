@@ -1,0 +1,7 @@
+import bpy
+obj= bpy.context.selected_objects
+for ob in obj:
+    if ob.type == 'MESH':
+        bpy.context.scene.objects.active = ob
+        while(len(ob.data.uv_textures)):
+            bpy.ops.mesh.uv_texture_remove()
