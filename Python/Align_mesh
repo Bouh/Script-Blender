@@ -1,0 +1,126 @@
+# reorient.py Copyright (C) 2010, Jean Michel Anger
+#
+# reorient mesh on global orientation
+#
+# ***** BEGIN GPL LICENSE BLOCK *****
+#
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software Foundation,
+# Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# ***** END GPL LICENCE BLOCK *****
+
+import bpy
+
+## REORIENT                   ##
+#########################################################
+
+def main(context):
+    for ob in context.scene.objects:
+        print(ob)
+
+
+class ReOrient(bpy.types.Operator):
+    """reorient object in global orientation with  local orientation of selected face edge vertex """
+    bl_idname = "object.reorient_operator"
+    bl_label = "reorient_global"
+
+    @classmethod
+    def poll(cls, context):
+        return context.object is not None and context.object.type == 'MESH'
+
+    def execute(self, context):
+        
+       
+        axisXp = True
+        MeshName=bpy.context.object.name #name of selected objet
+        if bpy.context.object.mode == "EDIT":
+            bpy.ops.view3d.snap_cursor_to_selected()
+            namemesh = context.object.name
+            bpy.ops.transform.create_orientation(name="orientreset", use=True, overwrite=True)  #create new orient
+            bpy.ops.object.editmode_toggle()
+            bpy.ops.object.empty_add(type='PLAIN_AXES', radius=1, view_align=False, location=(0, 0, 0))
+            bpy.context.object.name = "emptyOrient"
+            bpy.ops.view3d.snap_selected_to_cursor(use_offset=False)
+            bpy.ops.transform.transform(mode='ALIGN', value=(0, 0, 0, 0), axis=(0, 0, 0), constraint_axis=(False, False, False), constraint_orientation='orientreset', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+            bpy.ops.object.select_all(action='TOGGLE')
+            bpy.ops.object.select_pattern(pattern=MeshName)
+            bpy.ops.object.select_pattern(pattern="emptyOrient")
+            bpy.ops.object.parent_set(type='OBJECT', keep_transform=False)
+            bpy.ops.object.select_all(action='TOGGLE')
+            bpy.ops.object.select_pattern(pattern="emptyOrient")
+            bpy.ops.object.rotation_clear()
+            
+            if axisXp == True:
+                bpy.ops.transform.rotate(value=1.5708, axis=(0, 1, 0), constraint_axis=(False, True, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+           
+           '''
+	      		if axisXm == True:
+                bpy.ops.transform.rotate(value=-1.5708, axis=(0, 1, 0), constraint_axis=(False, True, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+            if axisYp == True:
+                bpy.ops.transform.rotate(value=1.5708, axis=(1, 0, 0), constraint_axis=(False, True, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+            if axisYm == True:
+                bpy.ops.transform.rotate(value=-1.5708, axis=(1, 0, 0), constraint_axis=(False, True, False), constraint_orientation='GLOBAL', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+            '''
+            
+            bpy.ops.object.select_all(action='TOGGLE')
+            bpy.ops.object.select_pattern(pattern=MeshName)
+            bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+            bpy.ops.object.select_all(action='TOGGLE')
+            bpy.ops.object.select_pattern(pattern="emptyOrient")
+            bpy.ops.object.delete(use_global=False)
+            #bpy.ops.object.select_pattern(pattern=MeshName)
+            bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+            bpy.ops.object.rotation_clear()
+            
+            ##bpy.ops.object.select_pattern(pattern=MeshName)
+            bpy.ops.transform.transform(mode='ALIGN', value=(0, 0, 0, 0), axis=(0, 0, 0), constraint_axis=(False, False, False), constraint_orientation='orientreset', mirror=False, proportional='DISABLED', proportional_edit_falloff='SMOOTH', proportional_size=1)
+            bpy.ops.transform.delete_orientation()
+            
+            bpy.context.scene.objects.active =  bpy.data.objects[namemesh]
+            bpy.data.objects[MeshName].select = True
+            bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+            #bpy.context.object.rotation_euler[0] = 0
+            #bpy.context.object.rotation_euler[1] = 0
+            #bpy.context.object.rotation_euler[2] = 0
+
+
+            return {'FINISHED'}
+        else:
+            main(context)
+            return {'FINISHED'}
+class CleanOption(bpy.types.Panel):
+    """Creates a bouton"""
+    bl_label = "Clean option"
+    bl_idname = "OBJECT_PT_cleanage"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = "Tools"
+
+    def draw(self, context):
+        layout = self.layout
+        row = layout.row()
+        row.operator("object.reorient_operator")
+
+
+def register():
+    bpy.utils.register_class(CleanOption)
+    bpy.utils.register_class(ReOrient)
+
+def unregister():
+    bpy.utils.unregister_class(CleanOption)
+    bpy.utils.unregister_class(ReOrient)
+
+if __name__ == "__main__":
+    register()
