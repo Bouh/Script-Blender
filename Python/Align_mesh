@@ -93,7 +93,6 @@ class ReOrient(bpy.types.Operator):
             #bpy.context.object.rotation_euler[1] = 0
             #bpy.context.object.rotation_euler[2] = 0
 
-
             return {'FINISHED'}
         else:
             main(context)
@@ -110,7 +109,6 @@ class CleanOption(bpy.types.Panel):
         layout = self.layout
         row = layout.row()
         row.operator("object.reorient_operator")
-
 
 def register():
     bpy.utils.register_class(CleanOption)
