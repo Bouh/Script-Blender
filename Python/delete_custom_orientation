@@ -1,0 +1,64 @@
+import bpy
+
+## DELETE ALL ORIENTATION ##
+############################
+
+def main(context):
+        
+
+    class ReOrient(bpy.types.Operator):
+        """reorient object in global orientation with  local orientation of selected face edge vertex """
+        bl_idname = "object.delete_orient_operator"
+        bl_label = "delete all orientations"
+
+        #@classmethod
+        #def poll(cls, context):
+            #return context.object is not None
+
+        def execute(self, context):
+            
+            #if bpy.context.object.mode == "OBJECT" :
+            bpy.ops.object.editmode_toggle()
+                   
+            for t in bpy.context.scene.orientations: 
+                 context.space_data.transform_orientation = t.name
+                 override = {
+                    'context':context,
+                    'area':context.area,
+                    'window':context.window,
+                    'screen':context.screen,
+                    'scene':context.scene,
+                    'region':context.region,
+                    'name':t.name
+                    }
+                 bpy.ops.transform.delete_orientation(override)
+        
+                 #return {'FINISHED'}
+                    
+            else:
+                main(context)
+                return {'FINISHED'}
+            
+    class CleanOption(bpy.types.Panel):
+        """Creates a bouton"""
+        bl_label = "Clean option"
+        bl_idname = "OBJECT_PT_cleanage"
+        bl_space_type = 'VIEW_3D'
+        bl_region_type = 'TOOLS'
+        bl_category = "Tools"
+
+        def draw(self, context):
+            layout = self.layout
+            row = layout.row()
+            row.operator("object.delete_orient_operator")
+
+    def register():
+        bpy.utils.register_class(CleanOption)
+        bpy.utils.register_class(ReOrient)
+
+    def unregister():
+        bpy.utils.unregister_class(CleanOption)
+        bpy.utils.unregister_class(ReOrient)
+
+    if __name__ == "__main__":
+        register()
